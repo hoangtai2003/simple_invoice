@@ -12,4 +12,17 @@ class InvoiceController extends Controller
         $invoices = Invoice::with('customer')->orderBy('id', 'DESC')->get();
         return $invoices;
     }
+    public function search_invoice(Request $request){
+        $search_invoice = $request->get('s');
+        if ($search_invoice != null){
+            $invoice = Invoice::with('customer')
+                ->where('id', 'like', "%{$search_invoice}%")
+                ->get();
+            return $invoice;
+        }
+        else {
+            return $this->get_all_invoice();
+        }
+
+    }
 }
