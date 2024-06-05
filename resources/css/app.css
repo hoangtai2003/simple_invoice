@@ -199,16 +199,13 @@ ul {
     gap: 10px;
     display: -ms-grid;
     display: grid;
-)[auto-fit];
+    -ms-grid-columns: (minmax(100px, 1fr))[auto-fit];
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
     border-bottom: 1px solid #e0e0e0;
     padding: 0.6rem 0;
-}
-.table--items {
-    -ms-grid-columns: (minmax(100px, 1fr);
 }
 
 .table--items--transactionId {
