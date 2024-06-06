@@ -58,7 +58,7 @@
 
                 <!-- item 1 -->
                 <div class="table--items" v-for="invoice in invoices" :key="invoice.id" v-if="invoices.length > 0">
-                    <a href="#" class="table--items--transactionId">#{{invoice.id}}</a>
+                    <a href="#" class="table--items--transactionId" @click="onShow(invoice.id)">#{{invoice.id}}</a>
                     <p>{{invoice.date}}</p>
                     <p>#{{invoice.number}}</p>
                     <p v-if="invoice.customer">{{invoice.customer.firstname}}</p>
@@ -105,5 +105,8 @@ onMounted(async () => {
 
 const newInvoice = async () => {
     router.push('/invoice/create')
+}
+const onShow = (id) => {
+    router.push('/invoice/show/'+id)
 }
 </script>
