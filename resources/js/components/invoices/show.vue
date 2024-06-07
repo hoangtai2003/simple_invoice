@@ -20,7 +20,7 @@
                     <ul  class="card__header-list">
                         <li>
                             <!-- Select Btn Option -->
-                            <button class="selectBtnFlat" onclick="print()">
+                            <button class="selectBtnFlat" @click="print()">
                                 <i class="fas fa-print"></i>
                                 Print
                             </button>
@@ -28,7 +28,7 @@
                         </li>
                         <li>
                             <!-- Select Btn Option -->
-                            <button class="selectBtnFlat">
+                            <button class="selectBtnFlat" @click="onEdit(form.id)">
                                 <i class=" fas fa-reply"></i>
                                 Edit
                             </button>
@@ -172,6 +172,9 @@ const getInvoice = async () => {
 const print = () => {
     window.print()
     router.push('/').catch(() => {})
+}
+const onEdit = (id) => {
+    router.push('/invoice/edit/'+id)
 }
 onMounted(async () => {
     await getInvoice()

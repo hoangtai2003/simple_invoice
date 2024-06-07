@@ -69,6 +69,7 @@ class InvoiceController extends Controller
             'date' =>  $request->input("date"),
             'due_date' => $request->input("due_date"),
             'discount' => $request->input("discount"),
+            'reference' => $request->input('reference'),
             'terms_and_conditions' => $request->input("terms_and_conditions")
         ]);
         foreach ($invoiceItem as $item){
@@ -88,4 +89,40 @@ class InvoiceController extends Controller
         $invoice = Invoice::with(['customer', 'invoice_items.product'])->find($id);
         return response()->json($invoice);
     }
+
+    public function delete_invoice_items(InvoiceItem $invoiceitem){
+        $invoiceitem->delete();
+    }
+
+    public function update_invoice(Request $request, $id) {
+        $invoice = Invoice::where('id', $id)->first();
+
+        if (!$invoice) {
+            return response()->json(['message' => 'Invoice not found'], 404);
+        }
+
+        $invoice->sub_total = $request->input("subtotal");
+        $invoice->total = $request->input("total");
+        $invoice->customer_id = $request->input("customer_id");
+        $invoice->number = $request->input("number");
+        $invoice->date = $request->input("date");
+        $invoice->due_date = $request->input("due_date");
+        $invoice->discount = $request->input("discount");
+        $invoice->terms_and_conditions = $request->input("terms_and_conditions");
+        $invoice->update($request->all());
+
+        $invoiceItemsData = $request->input("invoice_item");
+        $invoice->invoice_items()->delete();
+        foreach ($invoiceItemsData as $item) {
+            $itemData = [
+                'invoice_id' => $invoice->id,
+                'product_id' => $item['id'],
+                'quantity' => $item['quantity'],
+                'unit_price' => $item['unit_price']
+            ];
+            InvoiceItem::create($itemData);
+        }
+        return response()->json(['message' => 'Invoice updated successfully']);
+    }
+
 }
